@@ -22,6 +22,13 @@ const UserSchema = new Schema({
         enum: ["normal", "google"],
         default: "normal",
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    verificationCode: {
+        type: String,
+    },
     socialId: {
         type: String,
     },

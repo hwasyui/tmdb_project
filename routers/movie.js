@@ -19,6 +19,7 @@ router.post('/', async (req, res) => {
   }
 });
 // GET /movie
+
 router.get('/', async (req, res) => {
   const { keyword, page = 1, pageSize = 10 } = req.query;
 
