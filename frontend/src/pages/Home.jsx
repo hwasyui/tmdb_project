@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
 import Pagination from '../components/Pagination';
-import SearchBar from '../components/SearchBar';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -26,14 +25,28 @@ const Home = () => {
     fetchMovies();
   }, [keyword, page]);
 
+  useEffect(() => {
+    const handleSearchEvent = (e) => {
+      setPage(1);
+      setKeyword(e.detail);
+    };
+
+    window.addEventListener('triggerSearch', handleSearchEvent);
+    return () => {
+      window.removeEventListener('triggerSearch', handleSearchEvent);
+    };
+  }, []);
+
   return (
-    <div className="p-4 max-w-screen-xl mx-auto">
-      <SearchBar onSearch={setKeyword} />
-      <div className="grid grid-cols-5 gap-4 mt-4">
-        {movies.map((movie) => (
-          <MovieCard key={movie._id} movie={movie} />
-        ))}
+    <div className='bg-black'>
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          {movies.map((movie, index) => (
+            <MovieCard key={movie._id} movie={movie} index={(page - 1) * 10 + index} />
+          ))}
+        </div>
       </div>
+
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );

@@ -1,21 +1,72 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import ReviewForm from './ReviewForm';
+import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const ReviewItem = ({ review, movieId, userId, onChange }) => {
   const [editing, setEditing] = useState(false);
 
+  const confirmDelete = () => {
+    return new Promise((resolve, reject) => {
+      toast((t) => (
+        <span className="flex flex-col space-y-2">
+          <span className="text-sm font-semibold">Are you sure you want to delete this review?</span>
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                resolve(true);
+              }}
+              className="bg-red-500 text-white px-3 py-1 rounded text-sm"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                reject();
+              }}
+              className="bg-gray-300 text-black px-3 py-1 rounded text-sm"
+            >
+              No
+            </button>
+          </div>
+        </span>
+      ), { duration: Infinity });
+    });
+  };
+
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this review?")) return;
     try {
-      await axios.delete(
-        `http://localhost:8080/movies/${movieId}/review/${review._id}`
-      );
+      await confirmDelete();
+      await axios.delete(`http://localhost:8080/movies/${movieId}/review/${review._id}`);
+      toast.success('Review deleted!');
       onChange();
     } catch (err) {
-      console.error('Delete error:', err);
-      alert(err.response?.data?.error || 'Failed to delete review');
+      if (err) {
+        console.error('Delete error:', err);
+        toast.error(err.response?.data?.error || 'Failed to delete review');
+      }
     }
+  };
+
+  const renderStars = (rating) => {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    const empty = 5 - full - (half ? 1 : 0);
+
+    return (
+      <>
+        {[...Array(full)].map((_, i) => (
+          <FaStar key={`full-${i}`} className="text-yellow-400" />
+        ))}
+        {half && <FaStarHalfAlt className="text-yellow-400" />}
+        {[...Array(empty)].map((_, i) => (
+          <FaRegStar key={`empty-${i}`} className="text-gray-400" />
+        ))}
+      </>
+    );
   };
 
   if (editing) {
@@ -33,16 +84,23 @@ const ReviewItem = ({ review, movieId, userId, onChange }) => {
   }
 
   return (
-    <div className="border border-gray-200 p-4 rounded bg-white shadow">
-      <p className="mb-1">{review.comment}</p>
-      <p className="text-yellow-600 text-sm mb-2">⭐ {review.rating}</p>
+    <div className="border border-white p-4 rounded bg-zinc-900 text-white shadow">
+      <div className="flex justify-between items-center mb-1">
+        <p className="font-semibold">{review.user?.username || 'Anonymous'}</p>
+        <div className="flex items-center gap-1 text-sm">
+          {renderStars(review.rating)}
+          <span className="ml-2 text-yellow-400 font-medium">{review.rating.toFixed(1)}</span>
+        </div>
+      </div>
 
-      {review.user === userId && (
-        <div className="flex gap-3 text-sm">
-          <button onClick={() => setEditing(true)} className="text-blue-500">
+      <p className="text-gray-300 mb-2">{review.comment}</p>
+
+      {review.user?._id?.toString() === userId && (
+        <div className="flex gap-3 text-sm mt-2">
+          <button onClick={() => setEditing(true)} className="text-blue-400 hover:underline">
             Edit
           </button>
-          <button onClick={handleDelete} className="text-red-500">
+          <button onClick={handleDelete} className="text-red-400 hover:underline">
             Delete
           </button>
         </div>
