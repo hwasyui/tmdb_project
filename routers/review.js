@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
   const { user, comment, rating } = req.body;
 
   if (!comment) {
-    return res.status(400).json({ error: 'Comment is required' });
+    return res.status(400).json({ error: 'Content is required' });
   }
 
   try {
@@ -75,14 +75,14 @@ router.post('/', async (req, res) => {
  * PUT /movies/:movieId/Reviews/:ReviewId
  * Update a Review
  */
-router.put('/:ReviewId', async (req, res) => {
-  const { ReviewId } = req.params;
-  const { content } = req.body;
+router.put('/:reviewId', async (req, res) => {
+  const { reviewId } = req.params;
+  const { comment, rating } = req.body;
 
   try {
     const updatedReview = await Review.findByIdAndUpdate(
-      ReviewId,
-      { content },
+      reviewId,
+      { comment, rating },
       { new: true }
     );
 
@@ -98,17 +98,17 @@ router.put('/:ReviewId', async (req, res) => {
  * DELETE /movies/:movieId/Reviews/:ReviewId
  * Delete a Review
  */
-router.delete('/:ReviewId', async (req, res) => {
-  const { ReviewId, movieId } = req.params;
+router.delete('/:reviewId', async (req, res) => {
+  const { reviewId, movieId } = req.params;
 
   try {
-    const deleted = await Review.findByIdAndDelete(ReviewId);
+    const deleted = await Review.findByIdAndDelete(reviewId);
 
     if (!deleted) return res.status(404).json({ error: 'Review not found' });
 
     // Optional: remove from movie.Reviews array
-    await movie.findByIdAndUpdate(movieId, {
-      $pull: { Reviews: ReviewId }
+    await Movie.findByIdAndUpdate(movieId, {
+      $pull: { Reviews: reviewId }
     });
 
     res.json({ message: 'Review deleted successfully' });

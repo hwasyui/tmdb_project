@@ -30,4 +30,41 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+// DELETE /user/:userId
+router.delete('/:userId', async (req, res) => {
+  const { userId } = req.params;
+    if (!userId) return res.status(400).json({ error: 'userId is required' });
+  try {
+    const deleted = await User.findByIdAndDelete(userId);
+    if (!deleted) return res.status(404).json({ error: 'user not found' });
+
+    // Optional: delete all reviews associated with this user
+    await Review.deleteMany({ user: userId });
+
+    res.status(200).json({ message: 'user deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /user/:userId
+router.put('/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { username, email, password, isAdmin } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, email, password, isAdmin },
+      { new: true, runValidators: true  }
+    );
+
+    if (!updatedUser) return res.status(404).json({ error: 'user not found' });
+
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 export default router

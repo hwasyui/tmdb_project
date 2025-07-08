@@ -19,17 +19,112 @@ router.post('/', async (req, res) => {
   }
 });
 // GET /movie
-router.get('/', async (req, res) => {  
+router.get('/', async (req, res) => {
+  const { keyword, page = 1, pageSize = 10 } = req.query;
+
+  const limit = Math.max(1, parseInt(pageSize, 10));
+  const skip = (Math.max(1, parseInt(page, 10)) - 1) * limit;
+
+  const filter = keyword
+    ? {
+        $or: [
+          { title: { $regex: keyword, $options: 'i' } },
+          { content: { $regex: keyword, $options: 'i' } },
+        ],
+      }
+    : {};
+
   try {
-    const movies = await Movie.find();
+    const [movies, total] = await Promise.all([
+      Movie.find(filter).skip(skip).limit(limit),
+      Movie.countDocuments(filter),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
     res.status(200).json({
       message: 'Movies fetched successfully',
       data: movies,
+      total,
+      totalPages,
+      page: parseInt(page),
+      pageSize: limit,
+      hasNextPage: page * limit < total,
+      hasPrevPage: page > 1,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+// GET /movie/:movieId
+router.get('/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+
+  try {
+    const movie = await Movie.findById(movieId).populate({
+      path: 'reviews',
+      select: 'user comment rating createdAt',
+      populate: {
+        path: 'user',
+        select: 'username' // adjust if your user schema uses another field
+      }
+    });
+
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    res.status(200).json({
+      message: 'Movie fetched successfully',
+      data: movie,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// DELETE /movie/:movieId
+router.delete('/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+
+  try {
+    const deleted = await Movie.findByIdAndDelete(movieId);
+    if (!deleted) return res.status(404).json({ error: 'Movie not found' });
+
+    // Optional: delete all reviews associated with this movie
+    await Review.deleteMany({ movie: movieId });
+
+    res.status(200).json({ message: 'Movie deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /movie/:movieId
+router.put('/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+  const { title, posterURL, content, year } = req.body;
+
+  try {
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      movieId,
+      { title, posterURL, content, year },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMovie) return res.status(404).json({ error: 'Movie not found' });
+
+    res.status(200).json({
+      message: 'Movie updated successfully',
+      data: updatedMovie,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 router.use('/:movieId/review', reviewRouter);
 export default router
