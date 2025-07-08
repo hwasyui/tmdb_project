@@ -1,11 +1,13 @@
 import express from 'express';
 import movieRouter from './routers/movie.js'
+import userRouter from './routers/user.js'
 import cors from 'cors'
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 app.use('/movie', movieRouter)
+app.use('/user', userRouter)
 app.get('/', (req, res) => {
   res.send('Welcome to the API');
 });
