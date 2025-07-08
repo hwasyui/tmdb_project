@@ -9,7 +9,7 @@ const movies = [
     duration: '2h 28m',
     image: 'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg',
     description: 'A thief who steals corporate secrets through dream-sharing technology.',
-    comments: [] // ✅ tambahkan ini
+    comments: [] 
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const movies = [
     rating: 8.6,
     image: 'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg',
     description: 'A team travels through a wormhole in space to ensure humanity’s survival.',
-    comments: [] // ✅ tambahkan ini juga
+    comments: [] 
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const movies = [
     description: 'Batman faces the Joker, a criminal mastermind.',
     comments: []
   },
-  // Tambahkan comments ke semua movie lainnya juga
+  
   {
     id: 4,
     title: 'Tenet',
