@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Review from "../models/review.model.js";
 import Movie from "../models/movie.model.js";
+import User from "../models/user.model.js";
 import mongoose from "mongoose";
 const router = Router({ mergeParams: true });
 
@@ -64,6 +65,11 @@ router.post('/', async (req, res) => {
     // Optional: push Review reference to movie.Reviews array
     movie.reviews.push(savedReview._id);
     await movie.save();
+     const userDoc = await User.findById(user);
+    if (userDoc) {
+      userDoc.reviews.push(savedReview._id);
+      await userDoc.save();
+    }
     await updateMovieAverageRating(movieId);
     res.status(201).json(savedReview);
   } catch (err) {
@@ -87,7 +93,7 @@ router.put('/:reviewId', async (req, res) => {
     );
 
     if (!updatedReview) return res.status(404).json({ error: 'Review not found' });
-
+    await updateMovieAverageRating(movieId);
     res.json(updatedReview);
   } catch (err) {
     res.status(500).json({ error: err.message });

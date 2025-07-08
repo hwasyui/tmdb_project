@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 
   try {
     const [movies, total] = await Promise.all([
-      Movie.find(filter).skip(skip).limit(limit),
+      Movie.find(filter).skip(skip).limit(limit).populate('reviews'),,
       Movie.countDocuments(filter),
     ]);
 
@@ -62,14 +62,7 @@ router.get('/:movieId', async (req, res) => {
   const { movieId } = req.params;
 
   try {
-    const movie = await Movie.findById(movieId).populate({
-      path: 'reviews',
-      select: 'user comment rating createdAt',
-      populate: {
-        path: 'user',
-        select: 'username' // adjust if your user schema uses another field
-      }
-    });
+    const movie = await Movie.findById(movieId).populate('reviews');
 
     if (!movie) {
       return res.status(404).json({ error: 'Movie not found' });
