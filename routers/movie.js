@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import Movie from "../models/movie.model.js";
-import ReviewRouter from './routers/review.js'
+import reviewRouter from './review.js'
 // POST /movie
 router.post('/', async (req, res) => {
   try {
@@ -31,7 +31,5 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.use('/:postId/review', reviewRouter)
-
-router.post('/movie/:id')
+router.use('/:movieId/review', reviewRouter);
 export default router
