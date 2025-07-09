@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
 import Pagination from '../components/Pagination';
+import { FcClapperboard } from "react-icons/fc";
+
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -43,9 +45,8 @@ const Home = () => {
 
   return (
     <div className="bg-gradient-to-b from-black via-gray-900 to-black min-h-screen text-white">
-      {/* Beri padding-top sesuai tinggi navbar */}
       <div className="max-w-7xl mx-auto px-4 pt-28 pb-10">
-        <h1 className="text-3xl font-bold mb-6 text-center">🎬 Movie Collection</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center"><FcClapperboard className="inline-block mr-2" /> Movie Collection</h1>
 
         {loading ? (
           <div className="flex justify-center items-center min-h-[300px]">

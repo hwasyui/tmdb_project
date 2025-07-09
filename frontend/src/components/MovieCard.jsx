@@ -29,7 +29,7 @@ const MovieCard = ({ movie, index }) => {
       {/* Content */}
       <div className="p-4 space-y-1">
         <h3 className="text-white text-sm font-semibold leading-tight">
-          {index !== undefined ? `${index + 1}. ` : ''}
+          {/* {index !== undefined ? `${index + 1}. ` : ''} */}
           {movie.title}
         </h3>
         <p className="text-xs text-gray-400">🎬 Directed by {movie.director}</p>
