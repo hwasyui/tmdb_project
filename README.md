@@ -71,19 +71,20 @@ To run this project in your local environment, follow these steps.
 
 a. **Clone the Repository**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`git clone   cd` 
+`git clone   cd` 
 
 b. **Install Dependencies**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm install   `
+`   npm install   `
 
-c. **Create .env File**:Create a file named .env in the backend root folder and fill it with the following variables. Replace the values with your own configuration.
+c. **Create .env File**:
+Create a file named .env in the backend root folder and fill it with the following variables. Replace the values with your own configuration.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   # Server Configuration  PORT=8080  URL=http://localhost:8080  # MongoDB Connection  MONGO_URI=mongodb://localhost:27017/your-database-name  # JWT Secret Key  JWT_SECRET_KEY=a-very-strong-and-long-secret-key  # Google OAuth 2.0 Credentials (Get from Google Cloud Console)  GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com  GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET  # Nodemailer Credentials (Use an App Password from your Google Account)  EMAIL=your.email.address@gmail.com  GOOGLE_APP_PASSWORD=your-16-digit-app-password   `
+`   # Server Configuration  PORT=8080  URL=http://localhost:8080  # MongoDB Connection  MONGO_URI=mongodb://localhost:27017/your-database-name  # JWT Secret Key  JWT_SECRET_KEY=a-very-strong-and-long-secret-key  # Google OAuth 2.0 Credentials (Get from Google Cloud Console)  GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com  GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET  # Nodemailer Credentials (Use an App Password from your Google Account)  EMAIL=your.email.address@gmail.com  GOOGLE_APP_PASSWORD=your-16-digit-app-password   `
 
 d. **Run the Server**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm start   `
+`   npm start   `
 
 The server will be running at http://localhost:8080.
 
@@ -91,176 +92,17 @@ The server will be running at http://localhost:8080.
 
 a. **Navigate to the Client Folder**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`cd` 
+`cd` 
 
 b. **Install Dependencies**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm install   `
+`   npm install   `
 
 c. **Run the React Application**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm run dev   `
+`   npm run dev   `
 
 The React application will be running at http://localhost:5173 (or another available port).
-
-📚 API Documentation
---------------------
-
-Here is a list of the available API endpoints on the backend.
-
-### Authentication & Users (/auth)
-
-Method
-
-Path
-
-Description
-
-Body (Payload)
-
-Success Response
-
-POST
-
-/signup
-
-Registers a new user and sends a verification email.
-
-{"username", "email", "password"}
-
-201 Created - { "message", "user" }
-
-GET
-
-/signup/:generatedCode
-
-Verifies a user's email using the code from the link.
-
-\-
-
-200 OK - Text message
-
-POST
-
-/login
-
-Logs in a user with email & password. Sends a token in a cookie.
-
-{"email", "password"}
-
-200 OK - { "message" }
-
-POST
-
-/logout
-
-Logs out a user by clearing the token cookie.
-
-\-
-
-200 OK - { "message" }
-
-GET
-
-/login/google
-
-Starts the Google OAuth login flow (redirects to Google).
-
-\-
-
-Redirect
-
-GET
-
-/login/google/callback
-
-Callback from Google after a successful login. Sends a token in a cookie.
-
-\-
-
-Redirect
-
-GET
-
-/
-
-Gets all user data.
-
-\-
-
-200 OK - { "message", "data": \[users\] }
-
-GET
-
-/:userId
-
-Gets the details of a single user.
-
-\-
-
-200 OK - { "message", "data": user }
-
-PUT
-
-/:userId
-
-Updates a user's data.
-
-{"username", "email", ...}
-
-200 OK - updatedUser
-
-DELETE
-
-/:userId
-
-Deletes a user and all their associated reviews.
-
-\-
-
-200 OK - { "message" }
-
-### Movies & Reviews (/movies)
-
-Method
-
-Path
-
-Description
-
-Protection
-
-GET
-
-/
-
-Gets a list of all movies.
-
-Public
-
-GET
-
-/:id
-
-Gets the details of a single movie and its reviews.
-
-Public
-
-POST
-
-/:id/reviews
-
-Adds a new review to a movie.
-
-**Login Required (JWT)**
-
-DELETE
-
-/reviews/:reviewId
-
-Deletes a user's own review.
-
-**Login Required (JWT)**
 
 📝 Contribution
 --------------------------------------------
