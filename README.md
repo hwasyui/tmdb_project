@@ -114,7 +114,7 @@ The React application will be running at http://localhost:5173 (or another avail
 *   **Alif Elang Abhipraya**:
     
     *   Back End Development (Authorization and Authentication)
-    *   Front End Development (UI)
+    *   Front End Development (UI Animations)
 
 *   **Angelica Suti Whiharto**:
     
