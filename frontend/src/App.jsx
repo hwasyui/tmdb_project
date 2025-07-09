@@ -5,7 +5,8 @@ import Home from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
 import Navbar from './components/NavBar';
 import { Toaster, toast } from 'react-hot-toast';
-
+import Login from './pages/Login';
+import Signup from './pages/SignUp';
 const Layout = ({ children }) => {
   const location = useLocation();
 
@@ -35,6 +36,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Layout>
     </Router>

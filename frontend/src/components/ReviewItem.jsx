@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import ReviewForm from './ReviewForm';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
@@ -95,16 +95,16 @@ const ReviewItem = ({ review, movieId, userId, onChange }) => {
 
       <p className="text-gray-300 mb-2">{review.comment}</p>
 
-      {review.user?._id?.toString() === userId && (
-        <div className="flex gap-3 text-sm mt-2">
-          <button onClick={() => setEditing(true)} className="text-blue-400 hover:underline">
-            Edit
-          </button>
-          <button onClick={handleDelete} className="text-red-400 hover:underline">
-            Delete
-          </button>
-        </div>
-      )}
+      {userId && review.user && review.user._id?.toString() === userId && (
+  <div className="flex gap-3 text-sm mt-2">
+    <button onClick={() => setEditing(true)} className="text-blue-400 hover:underline">
+      Edit
+    </button>
+    <button onClick={handleDelete} className="text-red-400 hover:underline">
+      Delete
+    </button>
+  </div>
+)}
     </div>
   );
 };

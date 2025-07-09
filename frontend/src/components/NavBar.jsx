@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FaBars, FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 const Navbar = ({ onSearch }) => {
   const [input, setInput] = useState('');
   const hasTyped = useRef(false); // Track if user has typed
+  const { user, logout } = useContext(AuthContext);
+  console.log('[Navbar] user from context:', user);
+
 
   // Debounce search (wait 500ms after user stops typing)
   useEffect(() => {
@@ -59,9 +63,15 @@ const Navbar = ({ onSearch }) => {
 
       {/* Right section */}
       <div className="flex items-center gap-4 text-sm">
-        <span className="text-white cursor-pointer hover:underline">IMDbPro</span>
-        <span className="cursor-pointer hover:underline">Watchlist</span>
-        <span className="cursor-pointer hover:underline">Sign in</span>
+       {user ? (
+  <>
+    <span className="text-yellow-400 font-semibold">Hi, {user.username}</span>
+    <button onClick={logout}>Logout</button>
+  </>
+) : (
+  <Link to="/login">Login</Link>
+)}
+
         <span className="cursor-pointer hover:underline">EN ▼</span>
       </div>
     </nav>

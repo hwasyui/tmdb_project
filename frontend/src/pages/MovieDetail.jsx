@@ -4,14 +4,16 @@ import axios from 'axios';
 import ReviewItem from '../components/ReviewItem';
 import ReviewForm from '../components/ReviewForm';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext'; // Adjust path if needed
 
-const dummyUserId = '686cefb2a0a9f80e562a90de';
 
 const MovieDetail = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [refresh, setRefresh] = useState(false);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -104,7 +106,10 @@ const MovieDetail = () => {
             <div className="max-w-4xl mx-auto px-6 pb-20">
                 <hr className="border-gray-700 my-8" />
                 <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-                <ReviewForm movieId={id} userId={dummyUserId} onSuccess={handleRefresh} />
+                {user && (
+                    <ReviewForm movieId={id} userId={user._id} onSuccess={handleRefresh} />
+                )}
+
                 <div className="space-y-4 mt-6">
                     {reviews.length > 0 ? (
                         reviews.map((r) => (
@@ -112,9 +117,10 @@ const MovieDetail = () => {
                                 key={r._id}
                                 review={r}
                                 movieId={id}
-                                userId={dummyUserId} // FIXED typo from uuserId
+                                userId={user?._id}
                                 onChange={handleRefresh}
                             />
+
                         ))
                     ) : (
                         <p className="text-gray-400">No reviews yet.</p>

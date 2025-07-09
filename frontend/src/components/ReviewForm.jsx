@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
-
+import { AuthContext } from '../context/AuthContext';
 const ReviewForm = ({ movieId, userId, reviewToEdit, onSuccess }) => {
   const [comment, setComment] = useState(reviewToEdit?.comment || '');
   const [rating, setRating] = useState(reviewToEdit?.rating || 1);
   const [hover, setHover] = useState(null);
   const [editing, setEditing] = useState(!!reviewToEdit);
-
+  const { user } = useContext(AuthContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -15,12 +15,12 @@ const ReviewForm = ({ movieId, userId, reviewToEdit, onSuccess }) => {
       if (editing) {
         await axios.put(
           `http://localhost:8080/movies/${movieId}/review/${reviewToEdit._id}`,
-          { comment, rating, user: '686cefb2a0a9f80e562a90de'}
+          { comment, rating, user: user?._id }
         );
       } else {
         await axios.post(
           `http://localhost:8080/movies/${movieId}/review`,
-          { comment, rating, user: '686cefb2a0a9f80e562a90de' }
+          { comment, rating, user: user?._id }
         );
       }
 
